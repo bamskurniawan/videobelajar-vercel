@@ -1,0 +1,366 @@
+
+/* GLOBAL AUTHENTICATION */
+.auth-page {
+  min-height: 100vh;
+  background: #fffdf5;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* NAVBAR LOGIN & REGISTER */
+.auth-navbar {
+  height: 70px;
+  min-height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  align-items: center;
+  padding: 0 9.7%;
+  box-sizing: border-box;
+}
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.auth-logo img,
+.auth-logo .brand-logo {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* AREA UTAMA */
+.auth-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* CARD LOGIN */
+.auth-card {
+  width: 100%;
+  max-width: 543px;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 4px;
+  padding: 30px 32px 32px;
+  box-sizing: border-box;
+}
+
+.auth-card h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: #292929;
+  margin: 0 0 7px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #888888;
+  margin: 0 0 36px;
+}
+
+/* FORM LOGIN */
+.auth-field {
+  margin-bottom: 17px;
+  text-align: left;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 14px;
+  color: #555555;
+  margin-bottom: 7px;
+}
+
+.auth-field label span {
+  color: #ff5b45;
+}
+
+.auth-field input {
+  width: 100%;
+  height: 44px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #eeeeee;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.auth-field input:focus {
+  border-color: #38ca50;
+}
+
+/* PASSWORD */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 45px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* LUPA PASSWORD */
+.forgot-password {
+  text-align: right;
+  margin: 0 0 22px;
+}
+
+.forgot-password a {
+  font-size: 14px;
+  color: #555555;
+  text-decoration: none;
+}
+
+/* TOMBOL LOGIN DAN DAFTAR */
+.auth-button,
+.auth-secondary-button {
+  width: 100%;
+  height: 39px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.auth-button {
+  background: #32c94f;
+  color: #ffffff;
+  border: none;
+  margin-bottom: 14px;
+}
+
+.auth-secondary-button {
+  background: #e8fbe5;
+  color: #32c94f;
+  border: none;
+  margin-bottom: 20px;
+}
+
+/* PEMBATAS ATAU */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.auth-divider span {
+  flex: 1;
+  height: 1px;
+  background: #eeeeee;
+}
+
+.auth-divider p {
+  color: #777777;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* GOOGLE BUTTON */
+.google-button {
+  width: 100%;
+  height: 39px;
+  border: 1px solid #eeeeee;
+  background: #ffffff;
+  border-radius: 10px;
+  color: #444444;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.google-icon {
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* REGISTER FORM */
+.auth-card form {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555555;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid #eeeeee;
+  border-radius: 7px;
+  background-color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #32c759;
+}
+
+.auth-card form p {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.auth-card form p a {
+  color: #32c759;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 600px) {
+  .auth-navbar {
+    height: 60px;
+    min-height: 60px;
+    padding: 0 18px;
+  }
+
+  .auth-logo img,
+  .auth-logo .brand-logo {
+    width: 155px;
+  }
+
+  .auth-main {
+    padding: 25px 16px;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    max-width: 100%;
+    padding: 25px 20px;
+  }
+
+  .auth-card h1 {
+    font-size: 25px;
+  }
+
+  .auth-subtitle {
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+}
+
+/* NOMOR TELEPON REGISTER */
+.phone-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.phone-wrapper select {
+  width: 115px;
+  min-width: 115px;
+  height: 36px;
+  padding: 5px;
+  border: 1px solid #eeeeee;
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 13px;
+}
+
+.phone-wrapper input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* LABEL REGISTER */
+.form-group label span {
+  color: #ff5b45;
+}
+
+/* KODE NEGARA DAN BENDERA */
+.country-code {
+  width: 115px;
+  min-width: 115px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #eeeeee;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 0 7px;
+  box-sizing: border-box;
+  gap: 7px;
+}
+
+.indonesia-flag {
+  width: 20px;
+  height: 14px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border: 1px solid #dddddd;
+}
+
+.indonesia-flag span {
+  flex: 1;
+  background: #ed1c24;
+}
+
+.indonesia-flag::after {
+  content: "";
+  flex: 1;
+  background: #ffffff;
+}
+
+.country-code select {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
