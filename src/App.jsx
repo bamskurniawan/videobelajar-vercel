@@ -1,5 +1,6 @@
 
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import courses from './data/courses'
 import './App.css'
@@ -68,7 +69,11 @@ function Hero() {
 }
 
 // Course Card (Reusable Component)
-function CourseCard({ course }) {
+
+
+function CourseCard({ course, onEdit, onDelete }) {
+
+
   return (
     <Link
   to={`/course/${course.id}`}
@@ -107,6 +112,35 @@ function CourseCard({ course }) {
 
           <strong>{course.price}</strong>
         </div>
+
+
+<div className="course-manage-actions">
+  <button
+    type="button"
+    className="edit-course-button"
+    onClick={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      onEdit(course)
+    }}
+  >
+    Edit
+  </button>
+
+  <button
+    type="button"
+    className="delete-course-button"
+    onClick={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      onDelete(course)
+    }}
+  >
+    Hapus
+  </button>
+</div>
+
+
       </div>
     </Link>
   )
@@ -187,6 +221,87 @@ function Footer() {
 function App() {
   const [activeCategory, setActiveCategory] = useState('Semua Kelas')
   const [searchTerm, setSearchTerm] = useState('')
+   
+const [courseList, setCourseList] = useState(() => {
+  try {
+    const savedCourses = localStorage.getItem('videobelajar_courses')
+
+    if (savedCourses !== null) {
+      const parsedCourses = JSON.parse(savedCourses)
+
+      if (Array.isArray(parsedCourses)) {
+        return parsedCourses
+      }
+    }
+  } catch (error) {
+    console.error('Gagal membaca data kursus:', error)
+  }
+
+  return courses
+})
+
+useEffect(() => {
+  try {
+    localStorage.setItem(
+      'videobelajar_courses',
+      JSON.stringify(courseList)
+    )
+  } catch (error) {
+    console.error('Gagal menyimpan data kursus:', error)
+  }
+}, [courseList])
+
+
+  
+  const handleAddCourse = () => {
+    const title = prompt('Masukkan judul kursus:')
+
+    if (!title || !title.trim()) return
+
+    const newCourse = {
+      id: Math.max(0, ...courseList.map((course) => Number(course.id) || 0)) + 1,
+      category: 'Bisnis',
+      title: title.trim(),
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600',
+      instructor: 'Instruktur Baru',
+      role: 'Instruktur Profesional',
+      rating: '0 (0)',
+      price: 'Rp 300K',
+      description: 'Kursus pembelajaran baru di VideoBelajar.',
+    }
+
+    setCourseList((previousCourses) => [...previousCourses, newCourse])
+    setActiveCategory('Semua Kelas')
+    setSearchTerm('')
+  }
+
+  const handleEditCourse = (course) => {
+    const newTitle = prompt('Edit judul kursus:', course.title)
+
+    if (newTitle === null || !newTitle.trim()) return
+
+    setCourseList((previousCourses) =>
+      previousCourses.map((item) =>
+        item.id === course.id
+          ? { ...item, title: newTitle.trim() }
+          : item
+      )
+    )
+  }
+
+
+  const handleDeleteCourse = (course) => {
+    const confirmation = window.confirm(
+      `Apakah Anda yakin ingin menghapus kursus "${course.title}"?`
+    )
+
+    if (!confirmation) return
+
+    setCourseList((previousCourses) =>
+      previousCourses.filter((item) => item.id !== course.id)
+    )
+  }
+
 
   const categories = [
     'Semua Kelas',
@@ -195,8 +310,8 @@ function App() {
     'Pengembangan Diri',
     'Bisnis',
   ]
-
-  const filteredCourses = courses.filter((course) => {
+  
+const filteredCourses = courseList.filter((course) => {
   const matchCategory =
     activeCategory === 'Semua Kelas' ||
     course.category === activeCategory
@@ -219,6 +334,17 @@ function App() {
             <h2>Koleksi Video Pembelajaran Unggulan</h2>
             <p>Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!</p>
           </div>
+
+<div className="course-actions">
+  <button
+    type="button"
+    onClick={handleAddCourse}
+    className="add-course-button"
+  >
+    + Tambah Kursus
+  </button>
+</div>
+
 <div className="search-box">
   <input
     type="text"
@@ -242,7 +368,14 @@ function App() {
           <div className="course-grid">
           {filteredCourses.length > 0 ? (
   filteredCourses.map((course) => (
-    <CourseCard key={course.id} course={course} />
+    
+<CourseCard
+  key={course.id}
+  course={course}
+  onEdit={handleEditCourse}
+  onDelete={handleDeleteCourse}
+/>
+
   ))
 ) : (
   <p className="empty-message">

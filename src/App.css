@@ -459,3 +459,60 @@ input {
   object-fit: contain;
   display: block;
 }
+
+.course-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0;
+}
+
+.add-course-button {
+  background-color: #3ecf4c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-course-button:hover {
+  background-color: #2eaa3b;
+}
+
+.course-manage-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.edit-course-button {
+  background-color: #ffbd3a;
+  color: #222222;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-course-button:hover {
+  background-color: #e6a52b;
+}
+
+.delete-course-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-course-button:hover {
+  background-color: #dc2626;
+}
