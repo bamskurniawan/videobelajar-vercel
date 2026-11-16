@@ -3,6 +3,12 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import courses from './data/courses'
+import {
+  getCourses,
+  addCourse,
+  updateCourse,
+  deleteCourse
+} from './services/courseService'
 import './App.css'
 import logo from './assets/logo.jpg'
 
@@ -222,85 +228,117 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('Semua Kelas')
   const [searchTerm, setSearchTerm] = useState('')
    
-const [courseList, setCourseList] = useState(() => {
-  try {
-    const savedCourses = localStorage.getItem('videobelajar_courses')
-
-    if (savedCourses !== null) {
-      const parsedCourses = JSON.parse(savedCourses)
-
-      if (Array.isArray(parsedCourses)) {
-        return parsedCourses
-      }
-    }
-  } catch (error) {
-    console.error('Gagal membaca data kursus:', error)
-  }
-
-  return courses
-})
+const [courseList, setCourseList] = useState([])
 
 useEffect(() => {
-  try {
-    localStorage.setItem(
-      'videobelajar_courses',
-      JSON.stringify(courseList)
-    )
-  } catch (error) {
-    console.error('Gagal menyimpan data kursus:', error)
+  const fetchCourses = async () => {
+    try {
+      const data = await getCourses()
+      setCourseList(data)
+      console.log('Data berhasil diambil dari API:', data)
+    } catch (error) {
+      console.error('Gagal mengambil data dari API:', error)
+    }
   }
-}, [courseList])
+
+  fetchCourses()
+}, [])
+
+  
+  
+const handleAddCourse = async () => {
+  const title = prompt('Masukkan judul kursus:')
+
+  if (!title || !title.trim()) return
+
+  const newCourse = {
+    category: 'Bisnis',
+    title: title.trim(),
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600',
+    videoUrl: '',
+    instructor: 'Instruktur Baru',
+    role: 'Instruktur Profesional',
+    rating: '0 (0)',
+    price: 'Rp 300K',
+    description: 'Kursus pembelajaran baru di VideoBelajar.',
+  }
+
+  try {
+    const createdCourse = await addCourse(newCourse)
+
+    setCourseList((previousCourses) => [
+      ...previousCourses,
+      createdCourse,
+    ])
+
+    setActiveCategory('Semua Kelas')
+    setSearchTerm('')
+
+    alert('Kursus berhasil ditambahkan ke MockAPI!')
+  } catch (error) {
+    console.error('Gagal menambahkan kursus:', error)
+    alert('Gagal menambahkan kursus. Periksa koneksi API.')
+  }
+}
 
 
   
-  const handleAddCourse = () => {
-    const title = prompt('Masukkan judul kursus:')
+const handleEditCourse = async (course) => {
+  const newTitle = prompt('Edit judul kursus:', course.title)
 
-    if (!title || !title.trim()) return
+  if (newTitle === null || !newTitle.trim()) return
 
-    const newCourse = {
-      id: Math.max(0, ...courseList.map((course) => Number(course.id) || 0)) + 1,
-      category: 'Bisnis',
-      title: title.trim(),
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600',
-      instructor: 'Instruktur Baru',
-      role: 'Instruktur Profesional',
-      rating: '0 (0)',
-      price: 'Rp 300K',
-      description: 'Kursus pembelajaran baru di VideoBelajar.',
-    }
-
-    setCourseList((previousCourses) => [...previousCourses, newCourse])
-    setActiveCategory('Semua Kelas')
-    setSearchTerm('')
+  const updatedData = {
+    ...course,
+    title: newTitle.trim(),
   }
 
-  const handleEditCourse = (course) => {
-    const newTitle = prompt('Edit judul kursus:', course.title)
-
-    if (newTitle === null || !newTitle.trim()) return
+  try {
+    const updatedCourse = await updateCourse(
+      course.id,
+      updatedData
+    )
 
     setCourseList((previousCourses) =>
       previousCourses.map((item) =>
-        item.id === course.id
-          ? { ...item, title: newTitle.trim() }
+        String(item.id) === String(course.id)
+          ? updatedCourse
           : item
       )
     )
+
+    alert('Kursus berhasil diperbarui di MockAPI!')
+  } catch (error) {
+    console.error('Gagal mengedit kursus:', error)
+    alert('Gagal mengedit kursus. Periksa koneksi API.')
   }
+}
 
 
-  const handleDeleteCourse = (course) => {
-    const confirmation = window.confirm(
-      `Apakah Anda yakin ingin menghapus kursus "${course.title}"?`
-    )
+  
+const handleDeleteCourse = async (course) => {
+  const confirmation = window.confirm(
+    `Apakah Anda yakin ingin menghapus kursus "${course.title}"?`
+  )
 
-    if (!confirmation) return
+  if (!confirmation) return
+
+  try {
+    await deleteCourse(course.id)
 
     setCourseList((previousCourses) =>
-      previousCourses.filter((item) => item.id !== course.id)
+      previousCourses.filter(
+        (item) => String(item.id) !== String(course.id)
+      )
     )
+
+    alert('Kursus berhasil dihapus dari MockAPI!')
+  } catch (error) {
+    console.error('Gagal menghapus kursus:', error)
+    alert('Gagal menghapus kursus. Periksa koneksi API.')
   }
+}
+
 
 
   const categories = [
