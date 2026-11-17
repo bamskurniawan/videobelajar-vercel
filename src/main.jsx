@@ -8,6 +8,8 @@ import App from './App.jsx'
 import Login from './pages/Login.jsx'
 import CourseLearning from './pages/CourseLearning.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
+import { Provider } from 'react-redux'
+import { store } from './app/store.js'
 window.addEventListener('pageshow', () => {
     if (
         !localStorage.getItem('user') &&
@@ -19,6 +21,7 @@ window.addEventListener('pageshow', () => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+  <Provider store={store}>
     <BrowserRouter>
      <Routes>
       <Route
@@ -47,7 +50,8 @@ createRoot(document.getElementById('root')).render(
     </ProtectedRoute>
   }
 />
-    </Routes>
+        </Routes>
     </BrowserRouter>
+  </Provider>
   </StrictMode>,
 )

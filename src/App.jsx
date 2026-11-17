@@ -1,5 +1,6 @@
 
-
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCourses } from './features/courses/courseSlice'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import courses from './data/courses'
@@ -227,22 +228,14 @@ function Footer() {
 function App() {
   const [activeCategory, setActiveCategory] = useState('Semua Kelas')
   const [searchTerm, setSearchTerm] = useState('')
+    const dispatch = useDispatch()
+  const { loading, error } = useSelector((state) => state.courses)
    
-const [courseList, setCourseList] = useState([])
+const courseList = useSelector((state) => state.courses.items)
 
 useEffect(() => {
-  const fetchCourses = async () => {
-    try {
-      const data = await getCourses()
-      setCourseList(data)
-      console.log('Data berhasil diambil dari API:', data)
-    } catch (error) {
-      console.error('Gagal mengambil data dari API:', error)
-    }
-  }
-
-  fetchCourses()
-}, [])
+  dispatch(fetchCourses())
+}, [dispatch])
 
   
   
@@ -264,21 +257,17 @@ const handleAddCourse = async () => {
   }
 
   try {
-    const createdCourse = await addCourse(newCourse)
+  await addCourse(newCourse)
+  await dispatch(fetchCourses()).unwrap()
 
-    setCourseList((previousCourses) => [
-      ...previousCourses,
-      createdCourse,
-    ])
+  setActiveCategory('Semua Kelas')
+  setSearchTerm('')
 
-    setActiveCategory('Semua Kelas')
-    setSearchTerm('')
-
-    alert('Kursus berhasil ditambahkan ke MockAPI!')
-  } catch (error) {
-    console.error('Gagal menambahkan kursus:', error)
-    alert('Gagal menambahkan kursus. Periksa koneksi API.')
-  }
+  alert('Kursus berhasil ditambahkan ke MockAPI!')
+} catch (error) {
+  console.error('Gagal menambahkan atau memuat kursus:', error)
+  alert('Proses belum selesai. Periksa koneksi API.')
+}
 }
 
 
@@ -294,24 +283,14 @@ const handleEditCourse = async (course) => {
   }
 
   try {
-    const updatedCourse = await updateCourse(
-      course.id,
-      updatedData
-    )
+  await updateCourse(course.id, updatedData)
+  await dispatch(fetchCourses()).unwrap()
 
-    setCourseList((previousCourses) =>
-      previousCourses.map((item) =>
-        String(item.id) === String(course.id)
-          ? updatedCourse
-          : item
-      )
-    )
-
-    alert('Kursus berhasil diperbarui di MockAPI!')
-  } catch (error) {
-    console.error('Gagal mengedit kursus:', error)
-    alert('Gagal mengedit kursus. Periksa koneksi API.')
-  }
+  alert('Kursus berhasil diperbarui di MockAPI!')
+} catch (error) {
+  console.error('Gagal mengedit atau memuat kursus:', error)
+  alert('Proses belum selesai. Periksa koneksi API.')
+}
 }
 
 
@@ -324,19 +303,14 @@ const handleDeleteCourse = async (course) => {
   if (!confirmation) return
 
   try {
-    await deleteCourse(course.id)
+  await deleteCourse(course.id)
+  await dispatch(fetchCourses()).unwrap()
 
-    setCourseList((previousCourses) =>
-      previousCourses.filter(
-        (item) => String(item.id) !== String(course.id)
-      )
-    )
-
-    alert('Kursus berhasil dihapus dari MockAPI!')
-  } catch (error) {
-    console.error('Gagal menghapus kursus:', error)
-    alert('Gagal menghapus kursus. Periksa koneksi API.')
-  }
+  alert('Kursus berhasil dihapus dari MockAPI!')
+} catch (error) {
+  console.error('Gagal menghapus atau memuat kursus:', error)
+  alert('Proses belum selesai. Periksa koneksi API.')
+}
 }
 
 
